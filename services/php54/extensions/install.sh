@@ -64,6 +64,11 @@ if [ -z "${EXTENSIONS##*,mysqli,*}" ]; then
 	docker-php-ext-install mysqli
 fi
 
+if [ -z "${EXTENSIONS##*,mysql,*}" ]; then
+    echo "---------- Install mysqli ----------"
+	docker-php-ext-install mysql
+fi
+
 if [ -z "${EXTENSIONS##*,mbstring,*}" ]; then
     echo "---------- Install mbstring ----------"
 	docker-php-ext-install mbstring
