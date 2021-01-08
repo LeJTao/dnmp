@@ -5,18 +5,23 @@ ARG TZ
 ARG PHP_EXTENSIONS
 ARG CONTAINER_PACKAGE_URL
 
-
-RUN sed -i "s/httpredir.debian.org/${CONTAINER_PACKAGE_URL}/g" /etc/apt/sources.list \
-    && sed -i "s/security.debian.org/${CONTAINER_PACKAGE_URL}\/debian-security/g" /etc/apt/sources.list \
+RUN echo "Acquire" >> /etc/apt/apt.conf \
+    && echo "{" >> /etc/apt/apt.conf \
+    && echo '  http::User-Agent "Mozilla/5.0 (Windows NT 5.1; rv:25.0) ' >> /etc/apt/apt.conf \
+    && echo 'Gecko/20100101 Firefox/25.0";' >> /etc/apt/apt.conf \
+    && echo '};'  >> /etc/apt/apt.conf \
+	&& echo "" > /etc/apt/sources.list \
+	&& echo "deb http://mirrors.cloud.tencent.com/debian jessie main contrib non-free" >> /etc/apt/sources.list \
+	&& echo "deb http://mirrors.cloud.tencent.com/debian jessie-updates main contrib non-free" >> /etc/apt/sources.list \
+	&& echo "deb-src http://mirrors.cloud.tencent.com/debian jessie main contrib non-free" >> /etc/apt/sources.list \
+	&& echo "deb-src http://mirrors.cloud.tencent.com/debian jessie-updates main contrib non-free" >> /etc/apt/sources.list \
     && apt-get update
-
 
 COPY ./extensions /tmp/extensions
 WORKDIR /tmp/extensions
 RUN chmod +x install.sh \
     && sh install.sh \
     && rm -rf /tmp/extensions
-
 
 # Install composer and change it's cache home
 RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \
