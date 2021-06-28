@@ -64,11 +64,6 @@ if [ -z "${EXTENSIONS##*,mysqli,*}" ]; then
 	docker-php-ext-install mysqli
 fi
 
-if [ -z "${EXTENSIONS##*,mysql,*}" ]; then
-    echo "---------- Install mysqli ----------"
-	docker-php-ext-install mysql
-fi
-
 if [ -z "${EXTENSIONS##*,mbstring,*}" ]; then
     echo "---------- Install mbstring ----------"
 	docker-php-ext-install mbstring
@@ -286,23 +281,4 @@ if [ -z "${EXTENSIONS##*,pdo_sqlsrv,*}" ]; then
 	apt-get install -y unixodbc-dev
     pecl install pdo_sqlsrv
     docker-php-ext-enable pdo_sqlsrv
-fi
-
-if [ -z "${EXTENSIONS##*,redis,*}" ]; then
-    echo "---------- Install redis ----------"
-    installExtensionFromTgz redis-4.1.1
-fi
-
-if [ -z "${EXTENSIONS##*,mongo,*}" ]; then
-    echo "---------- Install mongo ----------"
-    apt-get install openssl -y 
-    apt-get install libssl-dev -y
-    pecl install mongo
-    docker-php-ext-enable mongo
-fi
-
-if [ -z "${EXTENSIONS##*,protocolbuffers,*}" ]; then
-    echo "---------- Install protocolbuffers ----------"
-    pecl install http://pecl.php.net/get/protocolbuffers-0.2.5.tgz
-    docker-php-ext-enable protocolbuffers
 fi
